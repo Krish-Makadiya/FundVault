@@ -4,14 +4,11 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
-
 
 export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
     const { data: session } = useSession();
-    const router = useRouter();
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -25,7 +22,6 @@ export default function Navbar() {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
-
 
     return (
         <nav className="w-[100%] text-[#f4f3ee] flex flex-col items-end">
@@ -63,15 +59,15 @@ export default function Navbar() {
                         About
                     </Link>
                     <Link
-                        href="/projects"
+                        href="https://github.com/Krish-Makadiya/FundVault"
                         className="ml-4 relative after:content-[''] after:absolute after:left-0 after:-bottom-[2px] after:h-[2.5px] after:w-2 after:bg-[#ffb703] after:transition-all after:duration-300 duration-200 hover:after:w-full hover:scale-110">
-                        Projects
+                        Github
                     </Link>
                 </div>
                 <div className="hidden md:flex gap-5 items-center">
                     {!session && (
                         <Link
-                            href="/signup"
+                            href="/login"
                             className="ml-4 relative after:content-[''] after:absolute after:left-0 after:-bottom-[2px] after:h-[2.5px] after:w-2 after:bg-[#ffb703] after:transition-all after:duration-300 duration-200 hover:after:w-full hover:scale-110">
                             Register
                         </Link>
@@ -85,9 +81,20 @@ export default function Navbar() {
                     )}
                     {session && (
                         <Link
-                            href="/dashboard"
+                            href={`/dashboard/${session.user.username}`}
                             className="ml-4 relative after:content-[''] after:absolute after:left-0 after:-bottom-[2px] after:h-[2.5px] after:w-2 after:bg-[#ffb703] after:transition-all after:duration-300 duration-200 hover:after:w-full hover:scale-110">
                             Dashboard
+                        </Link>
+                    )}
+                    {session && (
+                        <Link href="/settings">
+                            <Image
+                                src="/settings.png"
+                                width={30}
+                                height={30}
+                                alt="setting"
+                                className="transition-all duration-200 ease-in-out hover:scale-110"
+                            />
                         </Link>
                     )}
                     {session && (
